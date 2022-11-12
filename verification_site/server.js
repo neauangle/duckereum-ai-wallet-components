@@ -29,14 +29,14 @@ try {
 
 
 const app = express();
-const env = nunjucks.configure(['views', 'views/verify-wallet'], {
+const env = nunjucks.configure(['views', 'views/verify'], {
     autoescape: true,
     express: app
 });
 app.set('view engine', 'njk');
 app.use(express.static("static"));
 app.get('/', async function(req, res) {
-    res.render('verify-wallet/verify-wallet', {});
+    res.render('verify/verify', {});
 });
 
 

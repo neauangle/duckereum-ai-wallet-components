@@ -9,7 +9,7 @@ if not exist "node_modules" (
 	echo: 
 )
 
-cd ../wallet_verify
+cd ../verification_site
 if not exist "node_modules" (
 	echo Installing verification site dependencies...
     CALL npm install
@@ -19,6 +19,6 @@ if not exist "node_modules" (
 cd ..
 
 start node telegram_bot/bot.js
-CALL node wallet_verify/server.js
+CALL node verification_site/server.js
 
 set /p Input=
