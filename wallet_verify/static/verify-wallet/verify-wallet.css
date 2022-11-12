@@ -1,0 +1,62 @@
+main {
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    min-width: min-content;
+    width: 420px;
+    margin: 20px;
+}
+
+
+
+
+
+#wallet-connection {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    white-space: nowrap;
+    align-items: center;
+}
+#wallet-connection button, #wallet-connection div  {
+    grid-row: 1 / 1;
+    grid-column: 1 / 1;
+    display: flex;
+    visibility: hidden;
+    justify-content: center;
+}
+#connect-button {
+    justify-content: center;
+}
+
+
+
+
+
+
+
+
+#verification-block {
+    display: flex;
+    column-gap: 5px;
+}
+
+#verification-code-input {
+    height: 100%;
+    width: auto;
+}
+
+#verify-button {
+    width: 100%;
+}
+
+
+#verified-block {
+    visibility: hidden;
+    color: #4ce94c;
+}
+
+#verified-block> div:first-child {
+    text-align: center;
+    
+}

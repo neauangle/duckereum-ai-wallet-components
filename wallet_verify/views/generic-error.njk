@@ -1,0 +1,17 @@
+{% extends "shared/shell-shell.njk" %}
+
+{% block heading %}
+    <h3 class="page-heading">Error</h3>
+{% endblock %}
+
+{% block main %}
+    <style>
+        main {
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+    <main>
+       {{ message }}
+    </main>
+{% endblock %}

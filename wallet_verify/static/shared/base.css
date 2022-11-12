@@ -1,0 +1,125 @@
+:root {
+    /* Set sans-serif & mono fonts */
+    --sans-font: -apple-system, BlinkMacSystemFont, "Avenir Next", Avenir,
+    "Nimbus Sans L", Roboto, "Noto Sans", "Segoe UI", Arial, Helvetica,
+    "Helvetica Neue", sans-serif;
+    --mono-font: Consolas, Menlo, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+
+
+    --bg: #2b2b2b;
+    --text: #dcdcdc;
+    --border: #898EA4;
+    --accent-bg-1: #282727;
+    --accent-bg-2: #3c3c3c;
+    --font-size-normal: 18px;
+    --font-size-input: 18px;
+    --font-size-page-heading: 28px;
+    --font-size-normal-button: 18px;
+}
+
+/* Reset box-sizing */
+*, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+.page-heading {
+    font-size: var(--font-size-page-heading);
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    padding-top: 5px;
+    padding-bottom: 5px;
+    
+}
+
+html {
+    /* Set the font globally */
+    font-family: var(--sans-font);
+    scroll-behavior: smooth;
+    margin: 0;
+    height: 100%;
+}
+
+body {
+    color: var(--text);
+    background-color: var(--bg);
+    font-size: var(--font-size-normal);
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+
+main {
+    height: 100%;
+    width: 100%;
+    padding: 5px;
+    min-height: 0;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+    margin: 0;
+}
+
+
+
+
+
+
+
+
+input, textarea {
+    color: var(--text);
+    width: 100%;
+    padding: 5px 10px;
+    border: 1px solid var(--border);
+    font-size: var(--font-size-input);
+    align-self: start;
+    background-color: var(--accent-bg-1);
+}
+
+input:focus:not(:user-invalid), textarea:focus:not(:user-invalid) {
+    outline: none;
+}
+input:focus:not(:invalid), textarea:focus:not(:invalid),
+input:focus:not(.invalid), textarea:focus:not(.invalid)  {
+    outline: none;
+}
+
+input:disabled {
+    opacity: 0.5;
+}
+
+
+
+
+
+
+
+
+button {
+    background-color: var(--accent-bg-1);
+    padding: 7px 5px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: var(--font-size-normal-button);
+    white-space: nowrap;
+    user-select: none;
+}
+
+button:not(:disabled):hover {
+    cursor: pointer;
+    background-color: var(--accent-bg-2);
+}
+
+button:disabled {
+    opacity: 0.5;
+}
+
+button:not(:disabled):active {
+    background-color: var(--accent-bg-1);
+}

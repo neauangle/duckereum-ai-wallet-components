@@ -1,0 +1,37 @@
+{% extends "shared/shell-shell.njk" %}
+
+{% block headContents %}
+    <link rel="stylesheet" href="/verify-wallet/verify-wallet.css">
+{% endblock %}
+
+{% block heading %}
+    <h3 class="page-heading">Connect Telegram to Ethereum Wallet</h3>
+{% endblock %}
+
+{% block main %}
+    <main>
+        <div id="wallet-connection">
+            <div id="web3-unsupported-error-display">Please install the MetaMask extension!</div>
+            <button id="connect-button">Connect To MetaMask</button>
+            <div id="connected-address-display">0x000000000000000000000000000000000000dead</div>
+        </div>
+        
+        <div id="verification-block">
+            <input id="verification-code-input" type="text" placeholder="Enter telegram code" disabled>
+            <button id="verify-button" disabled>Verify</button>
+        </div>
+
+        <div id="verified-block">
+            <div>Verified</div>
+            <div id="verified-username">@BotFather</div>
+            <div id="verified-wallet-address">0x000000000000000000000000000000000000dead</div>
+        </div>
+        
+
+    </main>
+    
+{% endblock %}
+
+{% block scripts %}
+    <script src="/verify-wallet/verify-wallet.js" type="module"></script>
+{% endblock %}
