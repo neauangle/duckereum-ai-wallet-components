@@ -6,7 +6,6 @@ import net from 'net';
 
 
 //This lets us start the server from any folder and still use relative urls in here
-import process, { config } from 'process';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -22,7 +21,23 @@ const ethereumEndpoint = await botiq.ethers.createJsonRpcEndpoint({
 });
 
 const verificationCodeToUser = {};
-const userIdToInfo = {};
+const userDatbase = (() => {
+    let database = {};
+    if (fs.existsSync('./user-id-to-info.json')){
+        database = JSON.parse(fs.readFileSync('./user-id-to-info.json'));
+    } 
+    function set(userId, info){
+        database[userId] = info;
+        fs.writeFileSync('./user-id-to-info.json', JSON.stringify(database));
+    }
+    function get(userId){
+        return database[userId];
+    }
+    return {
+        set, get
+    }
+})();
+
 
 const acceptedCommands = [
     {
@@ -52,7 +67,7 @@ const acceptedCommands = [
         description: `Requests a verification code to use in associating a telegram account with an ethereum wallet.`,
         handler: async (bot, message, matchResult) => {
             let verificationCode = '';
-            for (let i = 0; i < config.verificationCodeLength; ++i){
+            for (let i = 0; i < configs.verificationCodeLength; ++i){
                 verificationCode += crypto.randomInt(0, 10)
             }
             verificationCodeToUser[verificationCode] = message.from;
@@ -63,9 +78,9 @@ const acceptedCommands = [
     {
         regex: /^\/request_free$/i,
         usage: `/request_free`,
-        description: `Requests an AI-generated image using the free tier (requires at least ${config.freeTierMinimumBalance} duckereum in wallet).`,
+        description: `Requests an AI-generated image using the free tier (requires at least ${configs.freeTierMinimumBalance} duckereum in wallet).`,
         handler: async (bot, message, matchResult) => {
-            const userInfo = userIdToInfo[message.from.id];
+            const userInfo = userDatbase.get(message.from.id);
             if (!userInfo){
                 bot.sendMessage(message.chat.id, `Error: There is no wallet address associated with your telegram yet!`);   
                 return;
@@ -75,10 +90,10 @@ const acceptedCommands = [
             try {
                 const duckereumBalance = await ethereumEndpoint.getBalance({
                     walletAddress: userInfo.walletAddress, 
-                    tokenAddress: config.freeTierTokenAddress,
+                    tokenAddress: configs.freeTierTokenAddress,
                 });
-                if (!duckereumBalance.rational.greaterOrEquals(config.freeTierMinimumBalance)){
-                    bot.sendMessage(message.chat.id, `Error: Use of the free tier requires at least ${config.freeTierMinimumBalance} duckereum in your wallet.\nBalance of wallet ${userInfo.walletAddress.slice(0, 8)}: ${duckereumBalance.string}.`);
+                if (!duckereumBalance.rational.greaterOrEquals(configs.freeTierMinimumBalance)){
+                    bot.sendMessage(message.chat.id, `Error: Use of the free tier requires at least ${configs.freeTierMinimumBalance} duckereum in your wallet.\nBalance of wallet ${userInfo.walletAddress.slice(0, 8)}: ${duckereumBalance.string}.`);
                     return;
                 } 
             } catch (error){
@@ -95,7 +110,7 @@ const acceptedCommands = [
         usage: `/request_pro`,
         description: `Requests an AI-generated image using the pro tier.`,
         handler: async (bot, message, matchResult) => {
-            const userInfo = userIdToInfo[message.from.id];
+            const userInfo = userDatbase.get(message.from.id);
             if (!userInfo){
                 bot.sendMessage(message.chat.id, `Error: There is no wallet address associated with your telegram yet!`);   
                 return;
@@ -104,7 +119,7 @@ const acceptedCommands = [
             try {
                 const nftBalance = await ethereumEndpoint.getBalance({
                     walletAddress: userInfo.walletAddress, 
-                    tokenAddress: config.proTierNftAddress,
+                    tokenAddress: configs.proTierNftAddress,
                     isNft: true
                 });
                 if (!nftBalance.rational.greater(0)){
@@ -188,11 +203,14 @@ export async function run(configs){
             }
             
             const info = {
-                user: verificationCodeToUser[data.verificationCode],
+                user: {
+                    id: user.id, 
+                    username:  user.username,
+                },
                 walletAddress: signedBy
             }
-            userIdToInfo[verificationCodeToUser[data.verificationCode].id] = info;
-            bot.sendMessage(verificationCodeToUser[data.verificationCode].id, `Success! Your wallet has been verified as: ${signedBy}`);
+            userDatbase.set(user.id, info);
+            bot.sendMessage(user.id, `Success! Your wallet has been verified as: ${signedBy}`);
             socket.write(JSON.stringify({
                 websocketId,
                 dataString: JSON.stringify({
