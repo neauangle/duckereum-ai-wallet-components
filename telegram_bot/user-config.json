@@ -1,4 +1,9 @@
 {
-    "telegramAccessToken": "5681172538:AAFGomL-LIiIJMUO0mpy_zDHStBpoMhWJuk",
-    "walletVerificationsPort": 5643
+    "telegramAccessToken": "5786654337:AAHEXlI2-Qz4XBQNJEK4w4BHtpcCz9lbfos",
+    "walletVerificationsPort": 5643,
+    "verificationCodeLength": 6,
+    "freeTierTokenAddress": "0xa52bffad02b1fe3f86a543a4e81962d3b3bb01a7",
+    "freeTierMinimumBalance": 1,
+    "proTierNftAddress": "0x73fa81eb199b5e280f1ce64829ed0f8348b30998",
+    "ethereumEndpoint": {"accessURL": "https://rpc.ankr.com/eth", "rateLimitPerSecond": 20}
 }
